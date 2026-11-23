@@ -15,27 +15,27 @@ there (see [Repositories that left this owner](#repositories-that-left-this-owne
 All 19 repositories are public on the GitHub Free plan. There are no private
 repositories and no forks in the organization.
 
-| Repository                                            | Visibility | Kind            | Notes                                                                |
-| ----------------------------------------------------- | ---------- | --------------- | -------------------------------------------------------------------- |
-| `repo-standard`                                       | public     | standard        | Reusable workflows, checkers and apply scripts. Implementation only. |
-| `repo-catalog`                                        | public     | catalog         | Roster, tier defaults and agent-access intent.                       |
-| `repo-template`                                       | public     | template        | GitHub template; Kotlin and Spring Boot reference service.           |
-| `.github`                                             | public     | profile         | This repository. Normative standard at `standards/`; no workflows.   |
-| `org-ai-plugin`                                       | public     | plugin          | Organization plugin layer and agent-access gate.                     |
-| `personal-ai-plugin`                                  | public     | plugin          | Personal plugin layer.                                               |
-| `maxstack`                                            | public     | tooling         | Workspace AI installer; PowerShell installer for Windows.            |
-| `dev-setup`                                           | public     | tooling         | Workstation baseline: tools, profiles and local services.            |
-| `postman-test-utils`                                  | public     | tooling         | Offline Postman and newman suite.                                    |
-| `playwright-api-wrapper`                              | public     | feature         | HTTP API that runs one Playwright scenario per request.              |
-| `browser-calculator`                                  | public     | feature         | Fastify calculator with a safe arithmetic evaluator.                 |
-| `pokeapi-wrapper`                                     | public     | feature         | FastAPI wrapper; reference for the generated-OpenAPI rule.           |
-| `fixture-nest`                                        | public     | fixture         | Conformance and agent-access fixture.                                |
-| `fixture-go`                                          | public     | fixture         | Conformance and agent-access fixture.                                |
-| `fixture-rust`                                        | public     | fixture         | Conformance and agent-access fixture.                                |
-| `fixture-dotnet`                                      | public     | fixture         | Conformance and agent-access fixture.                                |
-| `pdf-field-automation-acrobat`                        | public     | archived legacy | Retired. Read-only.                                                  |
-| `pstack-opencode-plugin`                              | public     | archived legacy | Retired. Read-only.                                                  |
-| `the-gaming-index-video-game-database-final-capstone` | public     | archived legacy | Retired course project. Read-only.                                   |
+| Repository                                            | Visibility | Kind            | Notes                                                                 |
+| ----------------------------------------------------- | ---------- | --------------- | --------------------------------------------------------------------- |
+| `repo-standard`                                       | public     | standard        | Reusable workflows, checkers and apply scripts. Implementation only.  |
+| `repo-catalog`                                        | public     | catalog         | Roster, tier defaults and agent-access intent.                        |
+| `repo-template`                                       | public     | template        | GitHub template; Kotlin and Spring Boot reference service.            |
+| `.github`                                             | public     | profile         | This repository. Normative standard at `standards/`; no workflows.    |
+| `org-ai-plugin`                                       | public     | plugin          | Organization plugin layer and agent-access gate.                      |
+| `personal-ai-plugin`                                  | public     | plugin          | Personal plugin layer.                                                |
+| `maxstack`                                            | public     | tooling         | Workspace AI installer; Linux-only, the Windows installer is dropped. |
+| `dev-setup`                                           | public     | tooling         | Windows workstation setup; to be archived (C9.1, C5.6).               |
+| `postman-test-utils`                                  | public     | tooling         | Offline Postman and newman suite.                                     |
+| `playwright-api-wrapper`                              | public     | feature         | HTTP API that runs one Playwright scenario per request.               |
+| `browser-calculator`                                  | public     | feature         | Fastify calculator with a safe arithmetic evaluator.                  |
+| `pokeapi-wrapper`                                     | public     | feature         | FastAPI wrapper; reference for the generated-OpenAPI rule.            |
+| `fixture-nest`                                        | public     | fixture         | Conformance and agent-access fixture.                                 |
+| `fixture-go`                                          | public     | fixture         | Conformance and agent-access fixture.                                 |
+| `fixture-rust`                                        | public     | fixture         | Conformance and agent-access fixture.                                 |
+| `fixture-dotnet`                                      | public     | fixture         | Conformance and agent-access fixture.                                 |
+| `pdf-field-automation-acrobat`                        | public     | archived legacy | Retired. Read-only.                                                   |
+| `pstack-opencode-plugin`                              | public     | archived legacy | Retired. Read-only.                                                   |
+| `the-gaming-index-video-game-database-final-capstone` | public     | archived legacy | Retired course project. Read-only.                                    |
 
 Archived repositories are read-only and outside the active rules. Their only obligation
 is the archive note from C9.1: the description starts `Retired (archived):`, the README
@@ -145,13 +145,12 @@ request would wait forever.
 Non-required jobs, which run on `main`, on a schedule, or on the pull request without
 blocking it:
 
-| Job                          | Runs              | Why                                                                |
-| ---------------------------- | ----------------- | ------------------------------------------------------------------ |
-| `secrets-full`               | `main` and weekly | Full-history gitleaks scan.                                        |
-| `security-full`              | `main` and weekly | Trivy misconfiguration and licence scans.                          |
-| `test-windows`, `test-macos` | `main` and weekly | `just test-portable` on each host.                                 |
-| `test-<suffix>`              | when declared     | A stable second suite, required only after it is green for a week. |
-| CodeQL                       | default setup     | Never required.                                                    |
+| Job             | Runs              | Why                                                                |
+| --------------- | ----------------- | ------------------------------------------------------------------ |
+| `secrets-full`  | `main` and weekly | Full-history gitleaks scan.                                        |
+| `security-full` | `main` and weekly | Trivy misconfiguration and licence scans.                          |
+| `test-<suffix>` | when declared     | A stable second suite, required only after it is green for a week. |
+| CodeQL          | default setup     | Never required.                                                    |
 
 Rules behind the set:
 
@@ -187,8 +186,7 @@ runs. The plan is concrete:
 5. Select tests from the diff with `just test-changed`. The full suite runs on every
    push to `main` and weekly, so selection never hides a failure for long. When the
    selector cannot map a change to a package, it runs the full suite.
-6. Keep CodeQL default setup, cross-OS matrices and scheduled audits out of the required
-   path.
+6. Keep CodeQL default setup and scheduled audits out of the required path.
 7. Measure before and after. `just ci-median` prints the median from the last 20 pull
    request runs; a repository that cannot reach 60 seconds records `C5.5` with the
    measured median and what dominates it.
@@ -241,9 +239,9 @@ not auto-merge, even when Dependabot opened it.
 Repository scripts are TypeScript executed by Bun and called through `just`. The old
 rule that every operational script ships as a bash and a PowerShell twin is dropped.
 Bash remains only as a thin launcher for a git hook or a one-line wrapper. PowerShell is
-allowed only for code that runs on a Windows target, currently the `maxstack` installer
-and the `dev-setup` Windows profile. Python stays only where TypeScript cannot do the
-job, recorded in `docs/exceptions.md`.
+allowed only for code that runs on a Windows target (C5.6). No repository here has one
+after this change: `maxstack` becomes Linux-only and `dev-setup` is archived. Python
+stays only where TypeScript cannot do the job, recorded in `docs/exceptions.md`.
 
 Existing `.mjs` checkers in `repo-standard` migrate to Bun TypeScript one script at a
 time. New scripts are `.ts` from the start. `tsconfig.json` enables `strict`, `bun check`
@@ -281,8 +279,7 @@ hand-wired recipes. Flint no longer activates `biome` or `biome-format`, `biome`
 `.claude/skills/<name>` → `../../.agents/skills/<name>`, because Claude Code reads only
 the second path (C8.2, C8.3). `.claude/skills/` holds no real directory. `just
 agent-files` fails when the two sets differ, a link is broken, or a skill names a recipe
-that does not exist. Windows clones set `core.symlinks=true`; a clone where links became
-text files fails the same recipe.
+that does not exist. A clone where links became text files fails the same recipe.
 
 The three consumer repositories that still carry `.claude/skills/verify/` move it to
 `.agents/skills/verify/` plus a symlink in one pull request. Do not keep two copies.
@@ -405,9 +402,9 @@ repository at versions the repository's own build supports. `maxstack` moves fro
 ### Testing
 
 Each repository adds a `test` job that runs its own suite through `just test`. A second
-suite is `test-<suffix>` and stays non-required until it has been green for a week.
-Cross-platform code adds `test-windows` and `test-macos` running `just test-portable` on
-`main` and weekly, not on the required pull request path. Pull requests run
+suite is `test-<suffix>` and stays non-required until it has been green for a week. Every
+job runs on `ubuntu-*` runners (C5.6). Windows-target code that a repository keeps is
+linted and parsed on Linux, never built or tested on a Windows runner. Pull requests run
 `just test-changed`; `main` and the weekly schedule run the full suite.
 
 ## Superseded
@@ -495,10 +492,10 @@ exists, and `simpsonm09-org` guards remain.
 | `repo-standard`                                       | Two main rulesets; docs duplicate policy; 48 `.mjs` scripts and a PowerShell twin; stale caller-template pin; `simpsonm09-org` guards.                                           | Follow-ups 1–5.                                                                                                                                              | 66 s                   |
 | `repo-catalog`                                        | `protect-main` has `OrganizationAdmin` bypass; `policy.md` claims 1 approval and a bypass the payload does not have.                                                             | Remove the actor; replace the prose with a link.                                                                                                             | 77 s                   |
 | `repo-template`                                       | `protect-main` has `OrganizationAdmin`; default setup not enabled; `dependabot-summary.yml` names the pre-rename repository.                                                     | Remove the actor; enable default setup; fix the identity.                                                                                                    | 149 s                  |
-| `maxstack`                                            | `OrganizationAdmin` bypass; no coverage, recorded centrally only; Node 22 and Python 3.13; 14 `.ps1` and 53 `.mjs`; 12-line `AGENTS.md`.                                         | Remove the actor; add repo-local coverage exception; converge pins; migrate scripts; expand `AGENTS.md`.                                                     | 848 s (one 1682 s run) |
+| `maxstack`                                            | `OrganizationAdmin` bypass; no coverage, recorded centrally only; Node 22 and Python 3.13; 14 `.ps1` (dropped as it becomes Linux-only) and 53 `.mjs`; 12-line `AGENTS.md`.      | Remove the actor; add repo-local coverage exception; converge pins; migrate scripts; make it Linux-only; expand `AGENTS.md`.                                 | 848 s (one 1682 s run) |
 | `org-ai-plugin`                                       | `OrganizationAdmin` bypass; aislop audit off under a central exception.                                                                                                          | Remove the actor; record the exception locally.                                                                                                              | 161 s                  |
 | `personal-ai-plugin`                                  | `OrganizationAdmin` bypass; aislop audit off; `docs/` has no `README.md`.                                                                                                        | Remove the actor; local exception; add the docs index.                                                                                                       | 349 s                  |
-| `dev-setup`                                           | `OrganizationAdmin` bypass; coverage excepted centrally; 14 `.ps1` and 4 `.sh`; no `.env.example`.                                                                               | Remove the actor; local exception; Windows-only PowerShell; add the example.                                                                                 | 271 s                  |
+| `dev-setup`                                           | `OrganizationAdmin` bypass; coverage excepted centrally; 14 `.ps1` and 4 `.sh`; a `windows-2022` workflow (C5.6); no `.env.example`.                                             | Archive it (C9.1): it is the Windows workstation setup and this owner is Linux-only.                                                                         | 271 s                  |
 | `browser-calculator`                                  | `OrganizationAdmin` and `Integration` bypass; Vitest and Biome; inert `templates/agents/`; `AGENTS.md` claims to be the reference implementation.                                | Remove both actors; migrate toolchain; delete the inert copy; name `repo-template` as the reference.                                                         | 185 s                  |
 | `postman-test-utils`                                  | `OrganizationAdmin` and `Integration` bypass; aislop audit off; Vitest and Biome.                                                                                                | Remove both actors; local exception; migrate toolchain.                                                                                                      | 116 s                  |
 | `playwright-api-wrapper`                              | `OrganizationAdmin` and `Integration` bypass; Vitest and Biome.                                                                                                                  | Remove both actors; migrate toolchain.                                                                                                                       | 252 s                  |
@@ -513,5 +510,5 @@ exists, and `simpsonm09-org` guards remain.
 | `the-gaming-index-video-game-database-final-capstone` | Archived; retirement note not confirmed.                                                                                                                                         | Confirm or add the C9.1 note.                                                                                                                                | n/a                    |
 
 The two largest required-check medians are `maxstack` and `personal-ai-plugin`. Both are
-dominated by the same causes: unsharded tests, a Windows matrix on the pull-request
-path, and full-history scanning. The C5 plan addresses all three.
+dominated by the same causes: unsharded tests and full-history scanning. The C5 plan
+addresses both.
