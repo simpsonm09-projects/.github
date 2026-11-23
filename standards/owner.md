@@ -191,6 +191,9 @@ runs. The plan is concrete:
    request runs; a repository that cannot reach 60 seconds records `C5.5` with the
    measured median and what dominates it.
 
+`just fleet-audit` re-derives this conformance list read-only, and `just fleet-audit --timing`
+adds the C5.1 median; `scripts/fleet-audit.ts` is the shared copy of the tool.
+
 ## Git hooks
 
 Hooks run through Lefthook, pinned in `mise.toml` as `"aqua:evilmartians/lefthook"` (C7.8). Each

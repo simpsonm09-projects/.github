@@ -31,3 +31,11 @@ standard for the organization.
 ## Skills
 
 No repo-local skills. General best practices and integration come from the plugins.
+
+## Auditing
+
+`just fleet-audit` checks every `simpsonm09-projects` repository against `standards/core.md` and
+`standards/owner.md` and exits 1 on a gap. `just fleet-audit --timing` adds the C5.1 median pull
+request CI wall time; `--owner <owner>` narrows the scope and `--json` prints machine output.
+Exceptions recorded in `docs/exceptions.md` are reported as excepted, not failures. The audit is
+read-only, needs `gh` logged in as both accounts, and runs locally rather than in CI.
