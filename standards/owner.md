@@ -5,7 +5,7 @@ shared CI, AI workflows, API testing and utilities. This document is the normati
 standard for the organization. [`core.md`](core.md) applies in full, and this owner
 adjusts only the rules marked **(profile)**. The implementation moved: `repo-standard`
 holds the reusable workflows, checkers and apply scripts, and `repo-catalog` holds the
-roster, tiers and agent-access intent. Neither repository states policy of its own.
+roster and the tiers. Neither repository states policy of its own.
 
 The `simpsonm09` user account is out of scope, except for the repositories that moved
 there (see [Repositories that left this owner](#repositories-that-left-this-owner)).
@@ -18,10 +18,10 @@ repositories and no forks in the organization.
 | Repository                                            | Visibility | Kind            | Notes                                                                 |
 | ----------------------------------------------------- | ---------- | --------------- | --------------------------------------------------------------------- |
 | `repo-standard`                                       | public     | standard        | Reusable workflows, checkers and apply scripts. Implementation only.  |
-| `repo-catalog`                                        | public     | catalog         | Roster, tier defaults and agent-access intent.                        |
+| `repo-catalog`                                        | public     | catalog         | Roster, tiers and the tier policy.                                    |
 | `repo-template`                                       | public     | template        | GitHub template; Kotlin and Spring Boot reference service.            |
 | `.github`                                             | public     | profile         | This repository. Normative standard at `standards/`; no workflows.    |
-| `org-ai-plugin`                                       | public     | plugin          | Organization plugin layer and agent-access gate.                      |
+| `org-ai-plugin`                                       | public     | plugin          | Organization plugin layer: shared skills and integrations.            |
 | `personal-ai-plugin`                                  | public     | plugin          | Personal plugin layer.                                                |
 | `maxstack`                                            | public     | tooling         | Workspace AI installer; Linux-only, the Windows installer is dropped. |
 | `dev-setup`                                           | public     | tooling         | Retired Windows workstation setup; archived 2026-11-23 (C9.1, C5.6).  |
@@ -29,10 +29,10 @@ repositories and no forks in the organization.
 | `playwright-api-wrapper`                              | public     | feature         | HTTP API that runs one Playwright scenario per request.               |
 | `browser-calculator`                                  | public     | feature         | Fastify calculator with a safe arithmetic evaluator.                  |
 | `pokeapi-wrapper`                                     | public     | feature         | FastAPI wrapper; reference for the generated-OpenAPI rule.            |
-| `fixture-nest`                                        | public     | fixture         | Conformance and agent-access fixture.                                 |
-| `fixture-go`                                          | public     | fixture         | Conformance and agent-access fixture.                                 |
-| `fixture-rust`                                        | public     | fixture         | Conformance and agent-access fixture.                                 |
-| `fixture-dotnet`                                      | public     | fixture         | Conformance and agent-access fixture.                                 |
+| `fixture-nest`                                        | public     | fixture         | Conformance fixture.                                                  |
+| `fixture-go`                                          | public     | fixture         | Conformance fixture.                                                  |
+| `fixture-rust`                                        | public     | fixture         | Conformance fixture.                                                  |
+| `fixture-dotnet`                                      | public     | fixture         | Conformance fixture.                                                  |
 | `pdf-field-automation-acrobat`                        | public     | archived legacy | Retired. Read-only.                                                   |
 | `pstack-opencode-plugin`                              | public     | archived legacy | Retired. Read-only.                                                   |
 | `the-gaming-index-video-game-database-final-capstone` | public     | archived legacy | Retired course project. Read-only.                                    |
@@ -291,26 +291,14 @@ repository `codeql.yml` is deleted. A repository whose language matrix default s
 cannot express records `C6.1` in `docs/exceptions.md` and keeps a workflow. CodeQL is
 never a required context.
 
-### Bypass actors and agent access
+### Bypass actors
 
-`protect-main` has no bypass actors at any access level. The live `OrganizationAdmin`
-entry (15 repositories) and the fleet App `Integration` entry (6 repositories) are
-removed. The agent-access model stays only where it adds no bypass to hard protection.
+`protect-main` has no bypass actors, so no agent and no administrator can push to `main`
+or merge a red pull request. The live `OrganizationAdmin` entry (15 repositories) and the
+fleet App `Integration` entry (6 repositories) are removed, and the App itself is retired.
 
-Agent access is intent recorded in `repo-catalog`, not a GitHub setting:
-
-| Level     | Agent may                                                                                                                                                                           |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `none`    | Nothing. No credential and no App installation.                                                                                                                                     |
-| `read`    | Clone, fetch and read. No App installation.                                                                                                                                         |
-| `propose` | Push a branch and open a pull request. Cannot merge.                                                                                                                                |
-| `merge`   | Merge its own green pull request through the API. Every required check and signature still applies; no bypass actor.                                                                |
-| `full`    | Not available to an agent. It would require a `protect-main` bypass. A catalog entry of `full` is read as `merge` until the catalog changes. No level grants `pushMain` or `admin`. |
-
-The fleet App installation supplies a repository-scoped token for `propose` and `merge`.
-The App requests no `administration` permission and appears in no ruleset. With no
-bypass actor, no agent and no administrator can push to `main` or merge a red pull
-request.
+Agents use the owner's own accounts: there is no organization App, installation token or
+per-repository access level, and the rulesets, required checks and hooks are the boundary.
 
 ### Owner guards
 
@@ -431,7 +419,7 @@ repositories are not edited here; each change is a follow-up pull request.
 | `repo-standard/docs/validation.md`         | `docs/exceptions.md` mechanism.                                   | Checkers.                                      |
 | `repo-standard/docs/automation.md`         | Dependabot, auto-merge and CodeQL policy.                         | Workflows.                                     |
 | `repo-standard/docs/agents-and-skills.md`  | Skill paths.                                                      | Templates.                                     |
-| `repo-catalog/policy.md`                   | Tiers, agent levels and membership rule.                          | Roster JSON and validator.                     |
+| `repo-catalog/policy.md`                   | Tiers and the membership rule.                                    | Roster JSON and validator.                     |
 
 What changed from the old standard:
 
