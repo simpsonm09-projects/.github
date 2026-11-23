@@ -1,5 +1,6 @@
 # Verbatim copies. They are not formatted by this repository.
 standards/core.md
+hooks/core.yml
 scripts/core-drift.ts
 
 # The organization profile is maintained separately.

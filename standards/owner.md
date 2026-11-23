@@ -102,8 +102,9 @@ set with a recorded exception; it is not bypassed.
 No private repository exists today. If one becomes unavoidable, it cannot carry
 rulesets on Free, so C2.1 is enforced locally and visibly:
 
-- A `pre-push` hook, installed by `just hooks`, refuses every push whose destination is
-  `refs/heads/main`. The hook is the primary guard.
+- A `lefthook.yml` loading `hooks/core.yml` and `hooks/owner.yml` through `remotes` at the
+  `hooks-v2` tag and installed by `just hooks`; its `core-policy` job refuses every push whose
+  destination is `refs/heads/main`. The hook is the primary guard.
 - A `guard-main` workflow triggers on `push` to `main`, fails, and opens an issue that
   names the pusher and the commit. It cannot revert the push; its purpose is to make
   the violation impossible to miss.
@@ -191,6 +192,25 @@ runs. The plan is concrete:
 7. Measure before and after. `just ci-median` prints the median from the last 20 pull
    request runs; a repository that cannot reach 60 seconds records `C5.5` with the
    measured median and what dominates it.
+
+## Git hooks
+
+Hooks run through Lefthook, pinned in `mise.toml` as `"aqua:evilmartians/lefthook"` (C7.8). Each
+repository's `lefthook.yml` loads `hooks/core.yml` and `hooks/owner.yml` from this repository
+through `remotes` at the annotated tag `hooks-v2`, and adds its own jobs under names that never
+start with `core-` or `owner-`. Repositories migrate from the old `.githooks` launchers to Lefthook
+per core C7.8.
+
+This owner's `hooks/owner.yml` job runs before every commit:
+
+| Job             | Recipe               | Behaviour                                                                                                                                       |
+| --------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `owner-signing` | `just signing-check` | Fails when `commit.gpgsign` is not true or `user.signingkey` is unset for this checkout, because `protect-main` requires signed commits (C2.7). |
+
+`just hooks` removes a local `core.hooksPath` only when it equals `.githooks`, refuses any other
+value or a global one, runs `lefthook install`, and then asserts that `lefthook dump` contains the
+`core-*` and `owner-*` jobs, because a failed remote fetch only warns. `lefthook-local.yml` is
+git-ignored, and agents never skip hooks: no `LEFTHOOK=0`, no `--no-verify` (C7.11).
 
 ## Owner rules
 
