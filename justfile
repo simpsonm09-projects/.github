@@ -1,4 +1,3 @@
-set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
 
 # List the recipes.
 default:
