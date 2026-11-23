@@ -103,7 +103,7 @@ No private repository exists today. If one becomes unavoidable, it cannot carry
 rulesets on Free, so C2.1 is enforced locally and visibly:
 
 - A `lefthook.yml` loading `hooks/core.yml` and `hooks/owner.yml` through `remotes` at the
-  `hooks-v2` tag and installed by `just hooks`; its `core-policy` job refuses every push whose
+  `hooks-v3` tag and installed by `just hooks`; its `core-policy` job refuses every push whose
   destination is `refs/heads/main`. The hook is the primary guard.
 - A `guard-main` workflow triggers on `push` to `main`, fails, and opens an issue that
   names the pusher and the commit. It cannot revert the push; its purpose is to make
@@ -197,7 +197,7 @@ runs. The plan is concrete:
 
 Hooks run through Lefthook, pinned in `mise.toml` as `"aqua:evilmartians/lefthook"` (C7.8). Each
 repository's `lefthook.yml` loads `hooks/core.yml` and `hooks/owner.yml` from this repository
-through `remotes` at the annotated tag `hooks-v2`, and adds its own jobs under names that never
+through `remotes` at the annotated tag `hooks-v3`, and adds its own jobs under names that never
 start with `core-` or `owner-`. Repositories migrate from the old `.githooks` launchers to Lefthook
 per core C7.8.
 
