@@ -24,7 +24,7 @@ repositories and no forks in the organization.
 | `org-ai-plugin`                                       | public     | plugin          | Organization plugin layer and agent-access gate.                      |
 | `personal-ai-plugin`                                  | public     | plugin          | Personal plugin layer.                                                |
 | `maxstack`                                            | public     | tooling         | Workspace AI installer; Linux-only, the Windows installer is dropped. |
-| `dev-setup`                                           | public     | tooling         | Windows workstation setup; to be archived (C9.1, C5.6).               |
+| `dev-setup`                                           | public     | tooling         | Retired Windows workstation setup; archived 2026-11-23 (C9.1, C5.6).  |
 | `postman-test-utils`                                  | public     | tooling         | Offline Postman and newman suite.                                     |
 | `playwright-api-wrapper`                              | public     | feature         | HTTP API that runs one Playwright scenario per request.               |
 | `browser-calculator`                                  | public     | feature         | Fastify calculator with a safe arithmetic evaluator.                  |
@@ -240,7 +240,7 @@ Repository scripts are TypeScript executed by Bun and called through `just`. The
 rule that every operational script ships as a bash and a PowerShell twin is dropped.
 Bash remains only as a thin launcher for a git hook or a one-line wrapper. PowerShell is
 allowed only for code that runs on a Windows target (C5.6). No repository here has one
-after this change: `maxstack` becomes Linux-only and `dev-setup` is archived. Python
+after this change: `maxstack` is Linux-only and `dev-setup` is archived. Python
 stays only where TypeScript cannot do the job, recorded in `docs/exceptions.md`.
 
 Existing `.mjs` checkers in `repo-standard` migrate to Bun TypeScript one script at a
