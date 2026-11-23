@@ -19,14 +19,9 @@ This organization holds the repositories. Development happens on branches in the
 
 The current org and personal plugins use CLI integrations and contribute no MCP server.
 
-## Personal integrations and homelab
-
-- [openclaw-homelab](https://github.com/simpsonm09-projects/openclaw-homelab): holds configuration, validation, and deployment runbooks for a self-hosted AI gateway. It is currently a scaffold; it does not install or run OpenClaw.
-
 ## Workstation and machines
 
 - [dev-setup](https://github.com/simpsonm09-projects/dev-setup): owns workstation tools, machine setup, local services, secrets loaders, and Agent Vault wrappers.
-- [machine-inventory](https://github.com/simpsonm09-projects/machine-inventory): records machine classes, counts, and capabilities without identifying devices or people.
 
 ## API and test tooling
 
