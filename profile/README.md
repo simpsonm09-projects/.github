@@ -21,7 +21,7 @@ The current org and personal plugins use CLI integrations and contribute no MCP 
 
 ## Workstation and machines
 
-- [dev-setup](https://github.com/simpsonm09-projects/dev-setup): owns workstation tools, machine setup, local services, secrets loaders, and Agent Vault wrappers.
+- [dev-setup](https://github.com/simpsonm09-projects/dev-setup) (retired): the Windows workstation setup this organization used before the fleet moved to Linux. Machine setup now lives in the [sakuragaoka-homelab](https://github.com/sakuragaoka-homelab) machine repositories.
 
 ## API and test tooling
 
