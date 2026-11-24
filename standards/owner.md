@@ -197,21 +197,32 @@ adds the C5.1 median; `scripts/fleet-audit.ts` is the shared copy of the tool.
 ## CI-only required checks
 
 C5.7 requires the pull-request checks to be the hook recipes. The `protect-main`
-rulesets still require the old `workflow / job` contexts below, which no hook
-recipe reports. Each one is **under review (C5.7)**: the migration in
-[Required checks](#required-checks) removes it, and the agent reviewing C5.7
-decides which stay. `just fleet-audit` accepts a context only while it is named
-in this section.
+rulesets still require the old `workflow / job` contexts during the migration in
+[Required checks](#required-checks); each one below is decided, not left open.
+`just fleet-audit` accepts a context only while it is named in this section.
 
-| Context               | Where      | State                   |
-| --------------------- | ---------- | ----------------------- |
-| `lint / flint`        | every      | **under review (C5.7)** |
-| `aislop / aislop`     | every      | **under review (C5.7)** |
-| `security / trivy`    | every      | **under review (C5.7)** |
-| `security / secrets`  | every      | **under review (C5.7)** |
-| `standard / standard` | every      | **under review (C5.7)** |
-| `coverage / coverage` | every      | **under review (C5.7)** |
-| `test-node`           | `maxstack` | **under review (C5.7)** |
+Four checks cannot run inside the hook budgets (pre-commit under 3 s, pre-push under
+30 s), so they stay required and this table is the owner-standard rule that names
+them (C5.7). Every other check is folded into `pre-push-check` and CI confirms it.
+
+| Context    | Old context during migration | Why it is CI-only                                                                                        | Measured locally       |
+| ---------- | ---------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `standard` | `standard / standard`        | `check-repo` reads the repository's GitHub settings and ruleset through the API; a hook cannot see them. | 2.2 s tree-local       |
+| `security` | `security / trivy`           | Trivy downloads the vulnerability database; the action caches it per day.                                | ~10 s warm, >60 s cold |
+| `aislop`   | `aislop / aislop`            | Fetches the npm package tree, so a hook would block a push when the registry is unreachable.             | 2.1 s warm, 9.2 s cold |
+| `coverage` | `coverage / coverage`        | The changed-line gate needs the pull request's base commit and the pinned `patch-coverage` checker.      | 0.3–4 s for the recipe |
+
+The folded checks, measured per repository on a warm cache: `fmt` (`just fmt-check`, 0.03–0.1 s),
+`lint` (`just lint`, 0.1–0.4 s), `typecheck` (0.07–1 s), `test` (0.3–10 s) and `secrets`
+(`just hook-pre-push` scans the exact pushed range). `just pre-push-check` measured 0.9–9 s.
+
+The `hooks` job keeps its name and runs `lefthook install`, the merged-config assertion and
+`lefthook validate` (C7.9), plus the four recipes that only a hook ran before — `agent-files`,
+`forbidden-files`, `workflows`, `shellcheck` — so every hook check has a CI confirmation. The
+decision table also lives in `repo-standard/docs/validation.md`.
+
+`maxstack` additionally requires `test-node`; its installer-port pull requests are open, so its
+row is added when they merge.
 
 ## Git hooks
 
