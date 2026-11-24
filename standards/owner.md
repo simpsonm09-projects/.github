@@ -194,6 +194,25 @@ runs. The plan is concrete:
 `just fleet-audit` re-derives this conformance list read-only, and `just fleet-audit --timing`
 adds the C5.1 median; `scripts/fleet-audit.ts` is the shared copy of the tool.
 
+## CI-only required checks
+
+C5.7 requires the pull-request checks to be the hook recipes. The `protect-main`
+rulesets still require the old `workflow / job` contexts below, which no hook
+recipe reports. Each one is **under review (C5.7)**: the migration in
+[Required checks](#required-checks) removes it, and the agent reviewing C5.7
+decides which stay. `just fleet-audit` accepts a context only while it is named
+in this section.
+
+| Context               | Where      | State                   |
+| --------------------- | ---------- | ----------------------- |
+| `lint / flint`        | every      | **under review (C5.7)** |
+| `aislop / aislop`     | every      | **under review (C5.7)** |
+| `security / trivy`    | every      | **under review (C5.7)** |
+| `security / secrets`  | every      | **under review (C5.7)** |
+| `standard / standard` | every      | **under review (C5.7)** |
+| `coverage / coverage` | every      | **under review (C5.7)** |
+| `test-node`           | `maxstack` | **under review (C5.7)** |
+
 ## Git hooks
 
 Hooks run through Lefthook, pinned in `mise.toml` as `"aqua:evilmartians/lefthook"` (C7.8). Each
