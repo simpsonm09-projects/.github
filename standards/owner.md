@@ -221,8 +221,10 @@ The `hooks` job keeps its name and runs `lefthook install`, the merged-config as
 `forbidden-files`, `workflows`, `shellcheck` — so every hook check has a CI confirmation. The
 decision table also lives in `repo-standard/docs/validation.md`.
 
-`maxstack` additionally requires `test-node`; its installer-port pull requests are open, so its
-row is added when they merge.
+`maxstack` also requires `test-node`. That job runs `just lint` and the three Node test files;
+`pre-push-check` runs both through `just lint` and `just test`, so the hook covers it without
+running the suite twice. Its `pre-push-check` measures 4.6 s and its `hooks` job confirms the four
+hook-only recipes like every other repository.
 
 ## Git hooks
 
